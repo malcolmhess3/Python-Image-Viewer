@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QInputDialog
+from PyQt5.QtWidgets import QFileDialog
 import os
 import re
 
@@ -17,15 +17,16 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         self.pictureCon = QtWidgets.QLabel(self.centralwidget)
+        # self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1890, 1000))
         self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1890, 1000))
         self.pictureCon.setText("")
         self.pictureCon.setPixmap(QtGui.QPixmap("apple.jpg"))
-        self.pictureCon.setScaledContents(False)
+        self.pictureCon.setScaledContents(True)
         self.pictureCon.setObjectName("pictureCon")
         self.pictureCon.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -37,6 +38,21 @@ class Ui_MainWindow(object):
         self.forewardButton = QtWidgets.QPushButton(self.centralwidget)
         self.forewardButton.setGeometry(QtCore.QRect(1860, 380, 50, 160))
         self.forewardButton.setObjectName("forewardButton")
+
+        self.scale = .8
+        self.width = 1890
+        self.hight = 1000
+        self.zoomInButton = QtWidgets.QPushButton(self.centralwidget)
+        self.zoomInButton.setGeometry(QtCore.QRect(0, 0, 50, 160))
+        self.zoomInButton.setObjectName("zoomInButton")
+        self.zoomInButton.setText("zoom in")
+        self.zoomInButton.clicked.connect(lambda: self.zoom(int(1)))
+
+        self.zoomOutButton = QtWidgets.QPushButton(self.centralwidget)
+        self.zoomOutButton.setGeometry(QtCore.QRect(100, 320, 50, 160))
+        self.zoomOutButton.setObjectName("zoomOutButton")
+        self.zoomOutButton.setText("zoom out")
+        self.zoomOutButton.clicked.connect(lambda: self.zoom(int(0)))
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -64,6 +80,7 @@ class Ui_MainWindow(object):
         self.pics = [x for x in os.listdir() if re.match(".*[.]jpg", x)]
 
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -89,8 +106,13 @@ class Ui_MainWindow(object):
         filepath = re.match(".+\/", filename).group(0)
         self.pics = [filepath + x for x in os.listdir(filepath) if re.match(".*[.]jpg||.*[.]png", x)]
         self.piclistcount = self.pics.index(filename)
-        
-
+    
+    def zoom(self, num):
+        nwidth = (num + self.scale) * self.width
+        nhight = (num + self.scale) * self.hight
+        self.pictureCon.resize(nwidth, nhight)
+        self.width = nwidth
+        self.hight = nhight
 
 if __name__ == "__main__":
     import sys

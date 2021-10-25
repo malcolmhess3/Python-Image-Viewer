@@ -9,38 +9,32 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QInputDialog
-import os
-import re
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1920, 1080)
+        MainWindow.setBaseSize(QtCore.QSize(0, 0))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-
         self.pictureCon = QtWidgets.QLabel(self.centralwidget)
-        self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1890, 1000))
+        self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1920, 1080))
         self.pictureCon.setText("")
         self.pictureCon.setPixmap(QtGui.QPixmap("apple.jpg"))
         self.pictureCon.setScaledContents(False)
-        self.pictureCon.setObjectName("pictureCon")
         self.pictureCon.setAlignment(QtCore.Qt.AlignCenter)
-
+        self.pictureCon.setObjectName("pictureCon")
         self.backButton = QtWidgets.QPushButton(self.centralwidget)
         self.backButton.setGeometry(QtCore.QRect(10, 380, 50, 160))
         self.backButton.setObjectName("backButton")
-
-
         self.forewardButton = QtWidgets.QPushButton(self.centralwidget)
         self.forewardButton.setGeometry(QtCore.QRect(1860, 380, 50, 160))
         self.forewardButton.setObjectName("forewardButton")
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 891, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 21))
         self.menubar.setObjectName("menubar")
         self.menuFIle = QtWidgets.QMenu(self.menubar)
         self.menuFIle.setObjectName("menuFIle")
@@ -48,7 +42,6 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.actionOpen = QtWidgets.QAction(MainWindow)
         self.actionOpen.setObjectName("actionOpen")
         self.menuFIle.addAction(self.actionOpen)
@@ -57,13 +50,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.backButton.clicked.connect(self.backButtonAction)
-        self.forewardButton.clicked.connect(self.forwardButtonAction)
-        self.actionOpen.triggered.connect(self.openButtonHandler)
-        self.piclistcount = 0
-        self.pics = [x for x in os.listdir() if re.match(".*[.]jpg", x)]
-
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -71,25 +57,6 @@ class Ui_MainWindow(object):
         self.forewardButton.setText(_translate("MainWindow", "forward"))
         self.menuFIle.setTitle(_translate("MainWindow", "File"))
         self.actionOpen.setText(_translate("MainWindow", "Open"))
-    
-    def forwardButtonAction(self):
-        self.piclistcount = self.piclistcount + 1 if self.piclistcount + 1 < len(self.pics) else 0
-        self.pictureCon.setPixmap(QtGui.QPixmap(self.pics[self.piclistcount]))
-        print(self.piclistcount)
-    
-    def backButtonAction(self):
-        self.piclistcount = self.piclistcount - 1 if self.piclistcount - 1 >= 0 else len(self.pics) - 1
-        self.pictureCon.setPixmap(QtGui.QPixmap(self.pics[self.piclistcount]))
-        print(self.piclistcount)
-
-    def openButtonHandler(self):
-        filename = QFileDialog.getOpenFileName()[0]
-        self.pictureCon.setPixmap(QtGui.QPixmap(filename))
-        print(filename)
-        filepath = re.match(".+\/", filename).group(0)
-        self.pics = [filepath + x for x in os.listdir(filepath) if re.match(".*[.]jpg||.*[.]png", x)]
-        self.piclistcount = self.pics.index(filename)
-        
 
 
 if __name__ == "__main__":

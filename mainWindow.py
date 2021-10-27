@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QScrollArea, QSizePolicy
 import os
 import re
 
@@ -21,12 +21,20 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-        self.pictureCon = QtWidgets.QLabel(self.centralwidget)
+
+        self.scrollArea = QScrollArea(self.centralwidget)
+        self.scrollArea.setSizePolicy(1890, 1000)
+        # self.scrollArea.setWidget(self.pictureCon)
+        self.scrollArea.setVisible(True)
+
+
+        self.pictureCon = QtWidgets.QLabel(self.scrollArea)
         # self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1890, 1000))
         self.pictureCon.setGeometry(QtCore.QRect(0, 0, 1890, 1000))
         self.pictureCon.setText("")
         self.pictureCon.setPixmap(QtGui.QPixmap("apple.jpg"))
-        self.pictureCon.setScaledContents(True)
+        self.pictureCon.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.pictureCon.setScaledContents(False)
         self.pictureCon.setObjectName("pictureCon")
         self.pictureCon.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -111,6 +119,7 @@ class Ui_MainWindow(object):
         nwidth = (num + self.scale) * self.width
         nhight = (num + self.scale) * self.hight
         self.pictureCon.resize(nwidth, nhight)
+        # self.pictureCon.pixmap.scaled(nwidth)
         self.width = nwidth
         self.hight = nhight
 

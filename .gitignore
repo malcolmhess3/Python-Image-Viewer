@@ -3,3 +3,5 @@
 *.ui
 /main.py
 /test.py
+/test2.py
+/zoom.py

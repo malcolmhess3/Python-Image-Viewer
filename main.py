@@ -13,18 +13,20 @@ class MainWindow(QMainWindow):
         
     def setUp(self):
         self.scaleFactor = 1.0
-        self.picIndex = 0
+        self.picIndex = 2
         self.pics = [x for x in os.listdir() if re.match(".*[.]jpg", x)]
-        self.ui.label.setPixmap(QtGui.QPixmap("apple.jpg"))
+        self.ui.label.setPixmap(QtGui.QPixmap("orange.jpg"))
         print(self.ui.label.pixmap().size())
         self.ui.label.setMinimumSize(self.ui.label.pixmap().size())
         self.ui.label.adjustSize()
+        self.ui.label_2.setVisible(False)
         self.ui.actionNext.triggered.connect(self.nextActionHandler)
         self.ui.actionPrev.triggered.connect(self.prevActionHandler)
         self.ui.actionOpen.triggered.connect(self.openActionHandler)
         self.ui.actionZoom_In.triggered.connect(self.zoomInActionHandler)
         self.ui.actionZoom_Out.triggered.connect(self.zoomOutActionHandler)
         self.ui.actionZoom_Normal.triggered.connect(self.zoomNormalActionHandler)
+        self.ui.actionDouble_Panel.triggered.connect(self.doublePanelActionHandler)
 
 
     def nextActionHandler(self):
@@ -73,6 +75,12 @@ class MainWindow(QMainWindow):
             print(self.scaleFactor)
             self.ui.label.adjustSize()
 
+    def doublePanelActionHandler(self):
+        if self.ui.label_2.isVisible():
+            self.ui.label_2.setVisible(False)
+        else:
+            self.ui.label_2.setVisible(True)
+        self.ui.label_2.setPixmap(QtGui.QPixmap(self.pics[self.picIndex+1]))
     
 
 if __name__ == "__main__":

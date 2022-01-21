@@ -1,7 +1,7 @@
 import sys, os, re
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QSizePolicy
 from PyQt5 import QtGui
-from uitest1 import Ui_MainWindow
+from main_window import Ui_MainWindow
 
 
 class MainWindow(QMainWindow):
@@ -16,7 +16,6 @@ class MainWindow(QMainWindow):
         self.picIndex = 2
         self.pics = [x for x in os.listdir() if re.match(".*[.]jpg", x)]
         self.ui.label.setPixmap(QtGui.QPixmap("orange.jpg"))
-        print(self.ui.label.pixmap().size())
         self.ui.label.setMinimumSize(self.ui.label.pixmap().size())
         self.ui.label.adjustSize()
         self.ui.label_2.setVisible(False)
@@ -35,7 +34,6 @@ class MainWindow(QMainWindow):
         self.ui.label.setMinimumSize(self.ui.label.pixmap().size())
         self.ui.label.adjustSize()
         self.scaleFactor = 1.0
-        print(self.picIndex)
     
     def prevActionHandler(self):
         self.picIndex = self.picIndex - 1 if self.picIndex - 1 >= 0 else len(self.pics) - 1
@@ -43,13 +41,11 @@ class MainWindow(QMainWindow):
         self.ui.label.setMinimumSize(self.ui.label.pixmap().size())
         self.ui.label.adjustSize()
         self.scaleFactor = 1.0
-        print(self.picIndex)
     
     def openActionHandler(self):
         filename = QFileDialog.getOpenFileName()[0]
         self.ui.label.setPixmap(QtGui.QPixmap(filename))
         self.zoomNormalActionHandler()
-        print(filename)
         filepath = re.match(".+\/", filename).group(0)
         self.pics = [filepath + x for x in os.listdir(filepath) if re.match(".*[.]jpg|.*[.]png", x)]
         self.picIndex = self.pics.index(filename)
